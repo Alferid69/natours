@@ -7,7 +7,8 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
-const compression = require('compression')
+const compression = require('compression');
+const cors = require('cors')
 
 const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
@@ -22,6 +23,12 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views')); // will be used to store the templates
 
 // 1) GLOBAL MIDDLEWARES
+// Implement CORS
+app.use(cors());
+// If our backend and frontend are in different domain
+// app.use(cors({origin: 'https://www.natours.com'}));
+app.options('*', cors()); // to allow complex reqs(put, delete...)
+
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
